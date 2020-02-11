@@ -16,6 +16,7 @@ const electron = require('electron');
     }
 
     app.whenReady().then(createWindow);
+    app.allowRendererProcessReuse = true;
     app.on('window-all-closed', () =>{
         app.quit();
     });

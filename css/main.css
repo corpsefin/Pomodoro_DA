@@ -55,3 +55,17 @@ ul, li{
     background-color: #F64C72;
     transition-duration: 0;
 }
+
+#mainWindow{
+    width: 100%;
+    text-align: center;
+}
+
+#timerContent{
+    margin: auto;
+}
+
+#timerText:hover{
+    color: blue;
+    cursor: pointer;
+}

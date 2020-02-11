@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="css/main.css"/>
     <link rel="icon" href="./img/mainico.ico">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet"> 
-    <script src="js/app.js" type="text/javascript" defer></script>
+    <script src="js/app.js" type="module" defer></script>
     <title>Pomodoro</title>
 </head>
 <body>
@@ -20,6 +20,14 @@
             <li class="sidebarItem"></li>
         </ul>
     </div>
-    <main id="mainWindow"></main>
+    <main id="mainWindow">
+        <div id="timerContent">
+            <h1 id="timerText">25:00</h1>
+            <button id="startTimer">Start</button>
+            <button id="pauseTimer">Pause</button>
+            <button id="stopTimer">Stop</button>
+            <button id="resetTimer">Reset</button>
+        </div>
+    </main>
 </body>
 </html>
