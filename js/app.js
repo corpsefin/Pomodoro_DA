@@ -11,9 +11,10 @@ import {Project} from './Project.js'
     const modalAddButton = document.getElementById('modalOk')
     const addTimerButton = document.getElementById('addTimer');
     const mainWindow = document.getElementById('mainWindow');
+    const sidebarItems = document.getElementsByClassName('sidebarItem');
+
     let opened=true;
     let modalOpen = false;
-
     let timer = Pomodoro(timerText.textContent.substr(0,2),timerText.textContent.substr(3,4));
     let newProject = Project('perkele', 5, 'perkeleen projekti');
 
@@ -50,17 +51,25 @@ import {Project} from './Project.js'
         timer.reset();
     })
 
-    sidebarContent.addEventListener('click', (e)=>{
-        setActivePage(e.target);
+    sidebar.addEventListener('click', (e)=>{
+        Array.from(sidebarItems).forEach(target =>{
+            if(target === e.target && target != closeSidebar)
+                setActivePage(target);
+            else
+                removeActivePage(target);
+        })
     })
 
     function setActivePage(page){
-        page.setAttribute('class', 'active');
+        page.classList.add('active');
+    }
+
+    function removeActivePage(page){
+        page.classList.remove('active');
     }
 
     function toggleSidebar(){
 
-        const sidebarItems = document.getElementsByClassName('sidebarItem');
         if(opened){
             sidebar.style.width = '3vw';
             Array.from(sidebarItems).forEach(sidebarItem => {

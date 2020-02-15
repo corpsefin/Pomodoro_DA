@@ -17,7 +17,7 @@ ul, li{
 }
 
 #sidebar{
-    width: 20%;
+    width: 200px;
     height: 100%;
     background-color: #bb5b58;
     color: white;
@@ -39,7 +39,7 @@ ul, li{
     padding: 0;
 }
 
-.sidebarItem{
+.sidebarItem, .active{
     width: 100%;
     height: 2em;
     padding: 2em 0;
@@ -48,7 +48,10 @@ ul, li{
     text-align: center;
     position: relative;
     cursor: pointer;
-    transition-duration: 1.5s;
+}
+
+.active{
+    background-color: #5b58bb;
 }
 
 .sidebarItem:hover, #closeSidebar:hover{
@@ -89,3 +92,4 @@ ul, li{
     border-radius: 1em;
     display: none;
 }
+
