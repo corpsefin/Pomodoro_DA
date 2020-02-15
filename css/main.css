@@ -19,7 +19,7 @@ ul, li{
 #sidebar{
     width: 20%;
     height: 100%;
-    background-color: #2F2FA2;
+    background-color: #bb5b58;
     color: white;
     transition-duration: 1000ms;
 }
@@ -52,7 +52,7 @@ ul, li{
 }
 
 .sidebarItem:hover, #closeSidebar:hover{
-    background-color: #F64C72;
+    background-color: #5b58bb;
     transition-duration: 0;
 }
 
@@ -62,10 +62,30 @@ ul, li{
 }
 
 #timerContent{
-    margin: auto;
+    padding: 3em;
+    border-radius: 2em;
+    margin: 2em 2em;
+    border: 1px solid #bb5886;
+}
+
+#timerText{
+    position:relative;
+    margin: 0.2em auto;
 }
 
 #timerText:hover{
-    color: blue;
+    color: #5b58bb;
     cursor: pointer;
+}
+
+#modalContent{
+    background: white;
+    position: fixed;
+    top: 0;
+    margin: 5em 50em;
+    width: 20em;
+    height: 10em;
+    border: 1px solid black;
+    border-radius: 1em;
+    display: none;
 }

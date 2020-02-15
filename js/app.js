@@ -5,11 +5,26 @@ import Pomodoro from './Pomodoro.js'
     const pauseButton = document.getElementById('pauseTimer');
     const stopButton = document.getElementById('stopTimer');
     const resetButton = document.getElementById('resetTimer');
+    const timerElement = document.getElementById('timerContent');
+    const modalAddButton = document.getElementById('modalOk')
+    const addTimerButton = document.getElementById('addTimer');
+    const mainWindow = document.getElementById('mainWindow');
     let opened=true;
+    let modalOpen = false;
 
     let timer = Pomodoro(timerText.textContent.substr(0,2),timerText.textContent.substr(3,4));
 
     closeSidebar.addEventListener('click', toggleSidebar);
+    addTimerButton.addEventListener('click', (e)=>{
+        e.preventDefault();
+        toggleTimerModal();
+    })
+
+    modalAddButton.addEventListener('click', (e)=>{
+        e.preventDefault();
+        let newTimer = Pomodoro(timerText.textContent.substr(0,2),timerText.textContent.substr(3,4));
+        let newTimerContent = document.createElement('div');
+    })
 
     startButton.addEventListener('click', (e)=>{
         e.preventDefault();
@@ -48,5 +63,26 @@ import Pomodoro from './Pomodoro.js'
             });
             opened=true;
         }
+    }
+
+    function toggleTimerModal(){
+        const modalContent = document.getElementById('modalContent');
+        const timerText = document.getElementById('modalTimer');
+        const time = timer.getTime();
+        console.log(time)
+        modalContent.setAttribute('id', 'modalContent');
+
+        timerText.textContent = timer.getTime();
+
+        if(!modalOpen){
+            modalContent.style.display = 'block';
+            modalOpen = true;
+        }
+        else{
+            modalContent.style.display = 'none';
+            modalOpen = false;
+        }
+
+        console.log(modalOpen)
     }
 }());
