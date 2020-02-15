@@ -1,6 +1,8 @@
 import Pomodoro from './Pomodoro.js'
+import {Project} from './Project.js'
 (function(){
     const closeSidebar = document.getElementById('closeSidebar');
+    const sidebar = document.getElementById('sidebar');
     const startButton = document.getElementById('startTimer');
     const pauseButton = document.getElementById('pauseTimer');
     const stopButton = document.getElementById('stopTimer');
@@ -13,6 +15,9 @@ import Pomodoro from './Pomodoro.js'
     let modalOpen = false;
 
     let timer = Pomodoro(timerText.textContent.substr(0,2),timerText.textContent.substr(3,4));
+    let newProject = Project('perkele', 5, 'perkeleen projekti');
+
+    console.log(newProject.getName())
 
     closeSidebar.addEventListener('click', toggleSidebar);
     addTimerButton.addEventListener('click', (e)=>{
@@ -45,10 +50,17 @@ import Pomodoro from './Pomodoro.js'
         timer.reset();
     })
 
-    function toggleSidebar(){
-        let sidebar = document.getElementById('sidebar');
-        let sidebarItems = document.getElementsByClassName('sidebarItem');
+    sidebarContent.addEventListener('click', (e)=>{
+        setActivePage(e.target);
+    })
 
+    function setActivePage(page){
+        page.setAttribute('class', 'active');
+    }
+
+    function toggleSidebar(){
+
+        const sidebarItems = document.getElementsByClassName('sidebarItem');
         if(opened){
             sidebar.style.width = '3vw';
             Array.from(sidebarItems).forEach(sidebarItem => {

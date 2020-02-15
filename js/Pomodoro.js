@@ -4,7 +4,7 @@ const Pomodoro = (min, sec) => {
     let isStarted = false;
     let minutes = min;
     let seconds = sec;
-    setInterval(() => {
+    const timer = setInterval(() => {
         if (isStarted) {
             seconds--;
             if (seconds < 10 && seconds >= 0) {
@@ -38,6 +38,7 @@ const Pomodoro = (min, sec) => {
     }
 
     function reset(){
+        //clearInterval(timer)
         seconds = sec;
         minutes = min;
         printTime(minutes + ':' + seconds);
