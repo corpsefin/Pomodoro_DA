@@ -17,7 +17,7 @@ ul, li{
 }
 
 #sidebar{
-    width: 200px;
+    width: 35vmin;
     height: 100%;
     background-color: #bb5b58;
     color: white;

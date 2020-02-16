@@ -12,7 +12,7 @@ const electron = require('electron');
             }
         })
 
-        win.loadFile('index.html');
+        win.loadFile('./views/index.html');
     }
 
     app.whenReady().then(createWindow);

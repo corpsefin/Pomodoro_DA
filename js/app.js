@@ -18,7 +18,7 @@ import {Project} from './Project.js'
     let timer = Pomodoro(timerText.textContent.substr(0,2),timerText.textContent.substr(3,4));
     let newProject = Project('perkele', 5, 'perkeleen projekti');
 
-    console.log(newProject.getName())
+    //console.log(newProject.getName())
 
     closeSidebar.addEventListener('click', toggleSidebar);
     addTimerButton.addEventListener('click', (e)=>{
@@ -68,17 +68,21 @@ import {Project} from './Project.js'
         page.classList.remove('active');
     }
 
+    function renderActivePage(url){
+        //mainWindow.innerHTML = 
+    }
+
     function toggleSidebar(){
 
         if(opened){
-            sidebar.style.width = '3vw';
+            sidebar.style.width = '5vmin';
             Array.from(sidebarItems).forEach(sidebarItem => {
                 sidebarItem.style.left = '-10em';
             });
             opened = false;
         }
         else{
-            sidebar.style.width = '20vw';
+            sidebar.style.width = '35vmin';
             Array.from(sidebarItems).forEach(sidebarItem => {
                 sidebarItem.style.left = '0em';
             });
@@ -104,6 +108,29 @@ import {Project} from './Project.js'
             modalOpen = false;
         }
 
-        console.log(modalOpen)
     }
+
+    window.addEventListener('hashchange', () =>{
+        let xhr = new XMLHttpRequest();
+
+
+        let url = window.location.toString();
+        let realUrl = url.split('#', url.length);
+        //console.log(realUrl[1])
+        xhr.open('GET', `${realUrl[1]}.html`, true);
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState === 4){
+                console.log('ready')
+                if(xhr.status === 200){
+                    if(realUrl[1] === 'index')
+                    //FIXME: Write code here that gets the mainWindow elements content from index.html
+                        console.log('index')
+                    mainWindow.innerHTML = xhr.responseText;
+                }
+            }
+            //console.log(xhr);
+        }
+        xhr.send();
+
+    })
 }());
