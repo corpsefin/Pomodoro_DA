@@ -1,9 +1,11 @@
-const Pomodoro = (min, sec) => {
+const Pomodoro = (min=25, sec=`00`) => {
     const timerText = document.getElementById('timerText');
+    
     const defaultTime = 25;
     let isStarted = false;
     let minutes = min;
     let seconds = sec;
+    printTime(minutes + ':' + seconds)
     const timer = setInterval(() => {
         if (isStarted) {
             seconds--;
@@ -25,6 +27,7 @@ const Pomodoro = (min, sec) => {
 
     function start() {
         isStarted = true;
+        console.log('start')
     }
 
     function pause() {
@@ -46,7 +49,11 @@ const Pomodoro = (min, sec) => {
 
     function printTime(time) {
         timerText.textContent = time;
-        console.log(time)
+    }
+
+    function setTimer(min, sec){
+        minutes = min;
+        seconds = sec;
     }
 
     return {
@@ -55,6 +62,7 @@ const Pomodoro = (min, sec) => {
         pause,
         stop,
         reset,
+        setTimer,
     }
 }
 

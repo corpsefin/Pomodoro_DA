@@ -6,6 +6,15 @@ html, body{
     font-family: 'Roboto';
 }
 
+a{
+    text-decoration: none;
+}
+
+a:visited{
+    color: white;
+}
+
+
 body{
     display: flex;
     flex-direction: row;
@@ -64,7 +73,7 @@ ul, li{
     text-align: center;
 }
 
-#timerContent{
+.timerContent{
     padding: 3em;
     border-radius: 2em;
     margin: 2em 2em;

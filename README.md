@@ -1,7 +1,7 @@
 
 15.02.2020: 
 
-+ SPA Page rendering
++ SPA Page rendering * WORKING ALMOST, TIMER DOESN'T WORK AFTER CHANGING PAGES *
 + Adding a new timer
     + Modal styling
     + Adding timer to the page after pressing add button in the modal

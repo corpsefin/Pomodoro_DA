@@ -7,15 +7,16 @@
     <link rel="stylesheet" href="../css/main.css"/>
     <link rel="icon" href="../img/mainico.ico">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet"> 
-
+    <script src="../js/app.js" type="module"></script>
+    <script>require('../js/SaveFile.js')</script>
     <title>Pomodoro</title>
 </head>
 <body>
     <div id="sidebar">
         <ul id="sidebarList">
             <li id="closeSidebar">X</li>
-            <li class="sidebarItem"><a href="#index">Timer</a></li>
-            <li class="sidebarItem"><a href="#projects">Projects</a></a></li>
+            <a href="#index"><li class="sidebarItem">Timer</li></a>
+            <a href="#projects"><li class="sidebarItem">Projects</li></a>
         </ul>
     </div>
     <main id="mainWindow">
@@ -24,14 +25,14 @@
             <button id="modalOk">Add</button>
         </div>
         <button id="addTimer">Add</button>
-        <div id="timerContent">
-            <h1 id="timerText">25:00</h1>
+        <div class="timerContent">
+            <h1 id="timerText"></h1>
             <button id="startTimer">Start</button>
             <button id="pauseTimer">Pause</button>
             <button id="stopTimer">Stop</button>
             <button id="resetTimer">Reset</button>
         </div>
     </main>
-    <script src="../js/app.js" type="module"></script>
+
 </body>
 </html>
