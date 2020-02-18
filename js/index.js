@@ -1,5 +1,3 @@
-const electron = require('electron');
-
 (function(){
     const { app, BrowserWindow } = require('electron');
 
@@ -17,6 +15,7 @@ const electron = require('electron');
 
     app.whenReady().then(createWindow);
     app.allowRendererProcessReuse = true;
+    app.getPath
     app.on('window-all-closed', () =>{
         app.quit();
     });

@@ -1,27 +1,37 @@
 import Pomodoro from './Pomodoro.js'
 import {Project} from './Project.js'
-import SaveFile from './SaveFile.js'
 
 (function(){
     function init(){
-        const closeSidebar = document.getElementById('closeSidebar');
+        const mainWindow = document.getElementById('mainWindow');
         const sidebar = document.getElementById('sidebar');
+        const closeSidebar = document.getElementById('closeSidebar');
+        const sidebarItems = document.getElementsByClassName('sidebarItem');
+        const modalAddButton = document.getElementById('modalOk')
+
+        let opened=true;
+        let modalOpen = false;
+        let timerArray = [];
+        localStorage.setItem('timers',timerArray);
+
+        //let defaultTimer = Pomodoro();
+
+        //timerArray.push(defaultTimer);
+        let ls = localStorage.getItem('timers');
+        console.log(ls)
+        console.log(timerArray)
+
+        /*localStorage.getItem('timers').forEach(timer =>{
+            renderTimer(timer);
+            console.log('a')
+        })*/
+
         const startButton = document.getElementById('startTimer');
         const pauseButton = document.getElementById('pauseTimer');
         const stopButton = document.getElementById('stopTimer');
         const resetButton = document.getElementById('resetTimer');
-        const timerElement = document.getElementById('timerContent');
         const addTimerButton = document.getElementById('addTimer');
-        const mainWindow = document.getElementById('mainWindow');
-        const sidebarItems = document.getElementsByClassName('sidebarItem');
-
-        let timerArray = [];
-        let opened=true;
-        let modalOpen = false;
-        let timer = Pomodoro();
-        let newProject = Project('perkele', 5, 'perkeleen projekti');
-
-        //console.log(newProject.getName())
+        const timerContent = document.getElementById('timerContent');
 
         closeSidebar.addEventListener('click', toggleSidebar);
         addTimerButton.addEventListener('click', (e)=>{
@@ -31,41 +41,25 @@ import SaveFile from './SaveFile.js'
 
         addTimerButton.addEventListener('click', (e)=>{
             e.preventDefault();
-            let newTimer = Pomodoro();
-            let newTimerContent = document.createElement('div');
-            const modalAddButton = document.getElementById('modalOk')
-            newTimerContent.setAttribute('class', 'timerContent')
-            modalAddButton.addEventListener('click', (e) =>{
-                e.preventDefault();
-                timerArray.push(newTimer);
-                mainWindow.appendChild(newTimerContent);
-                saveToFile(timerArray);
-            })
+            console.log(timerArray)
         })
 
-        function saveToFile(data){
+        modalAddButton.addEventListener('click', (e) =>{
+            e.preventDefault();
+            let newTimer = Pomodoro();
+            timerArray.push(newTimer);
+            console.log('timeeerin lissä')
+            renderTimer(newTimer);
+            //saveToFile(timerArray);
+        })
+
+
+
+       /* function saveToFile(data){
             let dataJson = JSON.stringify(data);
             let dataBlob = new Blob([dataJson], {type: 'application/json'});
-        }
+        }*/
 
-        startButton.addEventListener('click', (e)=>{
-            e.preventDefault();
-            timer.start();
-        })
-        pauseButton.addEventListener('click',(e)=>{
-            e.preventDefault();
-            timer.pause();
-        })
-
-        stopButton.addEventListener('click', (e)=>{
-            e.preventDefault();
-            timer.stop();
-        })
-
-        resetButton.addEventListener('click', (e)=>{
-            e.preventDefault();
-            timer.reset();
-        })
 
         sidebar.addEventListener('click', (e)=>{
             Array.from(sidebarItems).forEach(target =>{
@@ -78,17 +72,19 @@ import SaveFile from './SaveFile.js'
             })
         })
 
+        //ADDING STYLING TO ACTIVE MENU BUTTON
         function setActiveButton(button){
             button.classList.add('active');
         }
 
+        //REMOVING STYLING FROM INACTIVE MENU BUTTON
         function removeActivePage(button){
             button.classList.remove('active');
         }
 
+        //RENDERING THE ACTIVE PAGE
         function renderActivePage(){
-            window.addEventListener('hashchange', () =>{
-                console.log("ikkuna")
+            window.onhashchange = () =>{
                 let xhr = new XMLHttpRequest();
                 let url = window.location.toString();
                 let realUrl = url.split('#', url.length);
@@ -96,7 +92,6 @@ import SaveFile from './SaveFile.js'
                 xhr.open('GET', `${realUrl[1]}.html`, true);
                 xhr.onreadystatechange = function(){
                     if(xhr.readyState === 4){
-                        console.log('ready')
                         if(xhr.status === 200){
                             if(realUrl[1] === 'index'){
                                 let content = xhr.responseText.split('<main id="mainWindow">');
@@ -107,14 +102,13 @@ import SaveFile from './SaveFile.js'
                             else{
                                 mainWindow.innerHTML = xhr.responseText;
                                 const asdasd = document.getElementById('perke');
-                                asdasd.style.color = "red";
-                                
+                                asdasd.style.color = "red";  
                             }
                         }
                     }
                 }
                 xhr.send();
-            })
+            }
         }
 
         function toggleSidebar(){
@@ -138,11 +132,7 @@ import SaveFile from './SaveFile.js'
         function toggleTimerModal(){
             const modalContent = document.getElementById('modalContent');
             const timerText = document.getElementById('modalTimer');
-            const time = timer.getTime();
-            console.log(time)
             modalContent.setAttribute('id', 'modalContent');
-
-            timerText.textContent = timer.getTime();
 
             if(!modalOpen){
                 modalContent.style.display = 'block';
@@ -152,7 +142,42 @@ import SaveFile from './SaveFile.js'
                 modalContent.style.display = 'none';
                 modalOpen = false;
             }
+        }
 
+        function updateTimer(timer){
+            timerText.textContent = timer.getTime();
+        }
+
+        function renderTimer(timer){
+            const timerContent = document.createElement('div');
+            const timerStartButton = document.createElement('button');
+            const timerPauseButton = document.createElement('button');
+            const timerStopButton = document.createElement('button');
+            const timerResetButton = document.createElement('button');
+
+            timerStartButton.addEventListener('click', (e) =>{
+                e.preventDefault();
+                timer.start();
+            })
+
+            let timerText = document.createElement('h1');
+
+            timerText.setAttribute('id', 'timerText');
+
+            timerText.textContent = timer.getTime();
+            timerStartButton.innerHTML = `<p>Start</p>`;
+            timerPauseButton.innerHTML = `<p>Pause</p>`;
+            timerStopButton.innerHTML = `<p>Stop</p>`;
+            timerResetButton.innerHTML = `<p>Reset</p>`;
+
+            timerContent.setAttribute('id', 'timerContent');
+            timerStartButton.setAttribute('id', 'startTimer');
+            timerPauseButton.setAttribute('id', 'pauseTimer');
+            timerStopButton.setAttribute('id', 'stopTimer');
+            timerResetButton.setAttribute('id', 'resetTimer');
+
+            timerContent.append(timerText,timerStartButton, timerPauseButton, timerStopButton, timerResetButton);
+            mainWindow.appendChild(timerContent);
         }
     };
 

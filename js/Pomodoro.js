@@ -1,11 +1,9 @@
 const Pomodoro = (min=25, sec=`00`) => {
-    const timerText = document.getElementById('timerText');
-    
-    const defaultTime = 25;
+
     let isStarted = false;
     let minutes = min;
     let seconds = sec;
-    printTime(minutes + ':' + seconds)
+    //printTime(minutes + ':' + seconds)
     const timer = setInterval(() => {
         if (isStarted) {
             seconds--;
@@ -16,13 +14,14 @@ const Pomodoro = (min=25, sec=`00`) => {
                 minutes--;
                 seconds = 59;
             }
-            printTime(minutes + ':' + seconds)
+            //printTime(minutes + ':' + seconds)
+            getTime()
         }
     }, 1000);
 
     function getTime(){
-        let newTime = timerText.textContent;
-        return newTime;
+        console.log(seconds)
+        return minutes + ':' + seconds;
     }
 
     function start() {
@@ -37,7 +36,7 @@ const Pomodoro = (min=25, sec=`00`) => {
     function stop(){
         pause();
         reset();
-        printTime(minutes + ':' + seconds);
+        timer;
     }
 
     function reset(){
@@ -47,14 +46,12 @@ const Pomodoro = (min=25, sec=`00`) => {
         printTime(minutes + ':' + seconds);
     }
 
-    function printTime(time) {
-        timerText.textContent = time;
-    }
-
     function setTimer(min, sec){
         minutes = min;
         seconds = sec;
     }
+
+    
 
     return {
         getTime,
