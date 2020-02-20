@@ -7,31 +7,15 @@ import {Project} from './Project.js'
         const sidebar = document.getElementById('sidebar');
         const closeSidebar = document.getElementById('closeSidebar');
         const sidebarItems = document.getElementsByClassName('sidebarItem');
-        const modalAddButton = document.getElementById('modalOk')
+        const modalAddButton = document.getElementById('modalOk');
+        const addTimerButton = document.getElementById('addTimer');
+        const addProjectButton = document.getElementById('addProjectButton');
+        const timerValue = document.getElementById('timerValue');
 
         let opened=true;
         let modalOpen = false;
         let timerArray = [];
-        localStorage.setItem('timers',timerArray);
 
-        //let defaultTimer = Pomodoro();
-
-        //timerArray.push(defaultTimer);
-        let ls = localStorage.getItem('timers');
-        console.log(ls)
-        console.log(timerArray)
-
-        /*localStorage.getItem('timers').forEach(timer =>{
-            renderTimer(timer);
-            console.log('a')
-        })*/
-
-        const startButton = document.getElementById('startTimer');
-        const pauseButton = document.getElementById('pauseTimer');
-        const stopButton = document.getElementById('stopTimer');
-        const resetButton = document.getElementById('resetTimer');
-        const addTimerButton = document.getElementById('addTimer');
-        const timerContent = document.getElementById('timerContent');
 
         closeSidebar.addEventListener('click', toggleSidebar);
         addTimerButton.addEventListener('click', (e)=>{
@@ -39,27 +23,30 @@ import {Project} from './Project.js'
             toggleTimerModal();
         })
 
-        addTimerButton.addEventListener('click', (e)=>{
-            e.preventDefault();
-            console.log(timerArray)
-        })
+        
 
         modalAddButton.addEventListener('click', (e) =>{
             e.preventDefault();
-            let newTimer = Pomodoro();
+            let timerMinutes = 25;
+            let timerSeconds = 0;
+            if(timerValue.value != ''){
+                timerMinutes = timerValue.value.substr(0,2);
+                timerSeconds = timerValue.value.substr(3,4);
+            }
+            let newTimer = Pomodoro('',timerMinutes, timerSeconds, 5);
             timerArray.push(newTimer);
-            console.log('timeeerin lissä')
+            console.log(timerArray)
+            localStorage.setItem('timers', JSON.stringify(newTimer));
             renderTimer(newTimer);
-            //saveToFile(timerArray);
         })
 
+        /*Array.from(JSON.parse(localStorage.getItem('timers'))).forEach(timer=>{
+            renderTimer(timer);
+        })*/
 
-
-       /* function saveToFile(data){
-            let dataJson = JSON.stringify(data);
-            let dataBlob = new Blob([dataJson], {type: 'application/json'});
-        }*/
-
+       /* Array.from(ls).forEach(timer =>{
+            renderTimer(timer);
+        })*/
 
         sidebar.addEventListener('click', (e)=>{
             Array.from(sidebarItems).forEach(target =>{
@@ -68,7 +55,7 @@ import {Project} from './Project.js'
                     renderActivePage();
                 }
                 else
-                    removeActivePage(target);
+                    removeActiveButton(target);
             })
         })
 
@@ -78,7 +65,7 @@ import {Project} from './Project.js'
         }
 
         //REMOVING STYLING FROM INACTIVE MENU BUTTON
-        function removeActivePage(button){
+        function removeActiveButton(button){
             button.classList.remove('active');
         }
 
@@ -100,9 +87,11 @@ import {Project} from './Project.js'
                                 init();
                             }
                             else{
+                                init();
                                 mainWindow.innerHTML = xhr.responseText;
-                                const asdasd = document.getElementById('perke');
-                                asdasd.style.color = "red";  
+                                addProjectButton.addEventListener('click', (e)=>{
+                                    console.log(e.target)
+                                })
                             }
                         }
                     }
@@ -112,7 +101,6 @@ import {Project} from './Project.js'
         }
 
         function toggleSidebar(){
-
             if(opened){
                 sidebar.style.width = '5vmin';
                 Array.from(sidebarItems).forEach(sidebarItem => {
@@ -144,10 +132,6 @@ import {Project} from './Project.js'
             }
         }
 
-        function updateTimer(timer){
-            timerText.textContent = timer.getTime();
-        }
-
         function renderTimer(timer){
             const timerContent = document.createElement('div');
             const timerStartButton = document.createElement('button');
@@ -155,16 +139,31 @@ import {Project} from './Project.js'
             const timerStopButton = document.createElement('button');
             const timerResetButton = document.createElement('button');
 
+            //timerText.textContent = timer.getTime();
+            timerContent.appendChild(timer.renderTimerValue());
+            timerContent.appendChild(timer.renderTimerRounds());
+
+
             timerStartButton.addEventListener('click', (e) =>{
                 e.preventDefault();
                 timer.start();
             })
 
-            let timerText = document.createElement('h1');
+            timerPauseButton.addEventListener('click', (e)=>{
+                e.preventDefault();
+                timer.pause();
+            })
 
-            timerText.setAttribute('id', 'timerText');
+            timerStopButton.addEventListener('click', (e)=>{
+                e.preventDefault();
+                timer.stop();
+            })
 
-            timerText.textContent = timer.getTime();
+            timerResetButton.addEventListener('click', (e)=>{
+                e.preventDefault();
+                timer.reset();
+            })
+
             timerStartButton.innerHTML = `<p>Start</p>`;
             timerPauseButton.innerHTML = `<p>Pause</p>`;
             timerStopButton.innerHTML = `<p>Stop</p>`;
@@ -176,11 +175,10 @@ import {Project} from './Project.js'
             timerStopButton.setAttribute('id', 'stopTimer');
             timerResetButton.setAttribute('id', 'resetTimer');
 
-            timerContent.append(timerText,timerStartButton, timerPauseButton, timerStopButton, timerResetButton);
+            timerContent.append(timerStartButton, timerPauseButton, timerStopButton, timerResetButton);
             mainWindow.appendChild(timerContent);
         }
     };
 
 init();
-
 }());

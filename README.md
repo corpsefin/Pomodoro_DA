@@ -10,7 +10,6 @@ TODO:
             + Modal
 
     + General timer functioning
-        + Sound when timer is over
         + Timer rounds
         + Rendering the timer rounds on page
         + Pause timers
@@ -31,3 +30,7 @@ UNDER WORK:
 DONE:
     17.02.2020:
     + SPA Page rendering
+
+    19.02.2020:
+    + General timer functioning
+        + Sound when timer is over
