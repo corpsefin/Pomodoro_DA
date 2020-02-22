@@ -30,10 +30,10 @@ import {Project} from './Project.js'
             let timerMinutes = 25;
             let timerSeconds = 0;
             if(timerValue.value != ''){
-                timerMinutes = timerValue.value.substr(0,2);
-                timerSeconds = timerValue.value.substr(3,4);
+                timerMinutes = parseInt(timerValue.value.substr(0,2));
+                timerSeconds = parseInt(timerValue.value.substr(3,4));
             }
-            let newTimer = Pomodoro('',timerMinutes, timerSeconds, 5);
+            let newTimer = Pomodoro('',((timerMinutes*60)+timerSeconds), 5);
             timerArray.push(newTimer);
             console.log(timerArray)
             localStorage.setItem('timers', JSON.stringify(newTimer));
@@ -139,9 +139,8 @@ import {Project} from './Project.js'
             const timerStopButton = document.createElement('button');
             const timerResetButton = document.createElement('button');
 
-            //timerText.textContent = timer.getTime();
-            timerContent.appendChild(timer.renderTimerValue());
-            timerContent.appendChild(timer.renderTimerRounds());
+            //timerContent.appendChild(timer.renderTimerValue());
+            //timerContent.appendChild(timer.renderTimerRounds());
 
 
             timerStartButton.addEventListener('click', (e) =>{
