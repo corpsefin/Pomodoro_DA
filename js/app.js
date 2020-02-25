@@ -4,26 +4,28 @@ import {Project} from './Project.js'
 (function(){
     function init(){
         const mainWindow = document.getElementById('mainWindow');
+        const timerList = document.getElementById('timerList');
         const sidebar = document.getElementById('sidebar');
         const closeSidebar = document.getElementById('closeSidebar');
         const sidebarItems = document.getElementsByClassName('sidebarItem');
         const modalAddButton = document.getElementById('modalOk');
         const addTimerButton = document.getElementById('addTimer');
-        const addProjectButton = document.getElementById('addProjectButton');
+        const saveTimers = document.getElementById('saveTimers');
         const timerValue = document.getElementById('timerValue');
 
         let opened=true;
         let modalOpen = false;
         let timerArray = [];
 
+        saveTimers.addEventListener('click', (e)=>{
+            e.preventDefault();
+        })
 
         closeSidebar.addEventListener('click', toggleSidebar);
         addTimerButton.addEventListener('click', (e)=>{
             e.preventDefault();
             toggleTimerModal();
         })
-
-        
 
         modalAddButton.addEventListener('click', (e) =>{
             e.preventDefault();
@@ -35,9 +37,11 @@ import {Project} from './Project.js'
             }
             let newTimer = Pomodoro('',((timerMinutes*60)+timerSeconds), 5);
             timerArray.push(newTimer);
-            console.log(timerArray)
-            localStorage.setItem('timers', JSON.stringify(newTimer));
+            if(localStorage.getItem('timers') === null)
+                localStorage.setItem('timers', JSON.stringify(newTimer));
             renderTimer(newTimer);
+
+            console.log(timerArray)
         })
 
         /*Array.from(JSON.parse(localStorage.getItem('timers'))).forEach(timer=>{
@@ -89,6 +93,7 @@ import {Project} from './Project.js'
                             else{
                                 init();
                                 mainWindow.innerHTML = xhr.responseText;
+                                const addProjectButton = document.getElementById('addProjectButton');
                                 addProjectButton.addEventListener('click', (e)=>{
                                     console.log(e.target)
                                 })
@@ -98,6 +103,19 @@ import {Project} from './Project.js'
                 }
                 xhr.send();
             }
+        }
+
+        mainWindow.addEventListener('click', (e)=>{
+            dragElement(e.target)
+        })
+
+        function dragElement(element){
+            let pos1 = 0;
+            let pos2 = 0;
+            let pos3 = 0;
+            let pos4 = 0;
+
+            console.log(element.id)
         }
 
         function toggleSidebar(){
@@ -138,10 +156,7 @@ import {Project} from './Project.js'
             const timerPauseButton = document.createElement('button');
             const timerStopButton = document.createElement('button');
             const timerResetButton = document.createElement('button');
-
-            //timerContent.appendChild(timer.renderTimerValue());
-            //timerContent.appendChild(timer.renderTimerRounds());
-
+            const projectName = document.createElement('h1');
 
             timerStartButton.addEventListener('click', (e) =>{
                 e.preventDefault();
@@ -167,15 +182,17 @@ import {Project} from './Project.js'
             timerPauseButton.innerHTML = `<p>Pause</p>`;
             timerStopButton.innerHTML = `<p>Stop</p>`;
             timerResetButton.innerHTML = `<p>Reset</p>`;
+            projectName.innerHTML = 'PREJCT';
 
-            timerContent.setAttribute('id', 'timerContent');
+            timerContent.setAttribute('class', 'timerContent');
             timerStartButton.setAttribute('id', 'startTimer');
             timerPauseButton.setAttribute('id', 'pauseTimer');
             timerStopButton.setAttribute('id', 'stopTimer');
             timerResetButton.setAttribute('id', 'resetTimer');
+            projectName.setAttribute('class', 'projectNameTimerBackground');
 
-            timerContent.append(timerStartButton, timerPauseButton, timerStopButton, timerResetButton);
-            mainWindow.appendChild(timerContent);
+            timerContent.append(projectName,timer.getValue('timer'),timer.getValue('rounds'),timerStartButton, timerPauseButton, timerStopButton, timerResetButton);
+            timerList.appendChild(timerContent);
         }
     };
 

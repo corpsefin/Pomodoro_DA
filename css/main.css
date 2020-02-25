@@ -70,7 +70,13 @@ ul, li{
 
 #mainWindow{
     width: 100%;
+    height: 100%;
+    margin: 1em;
     text-align: center;
+}
+
+#timerList{
+    margin: auto;
 }
 
 .timerContent{
@@ -92,13 +98,29 @@ ul, li{
 
 #modalContent{
     background: white;
-    position: fixed;
-    top: 0;
-    margin: 5em 50em;
+    position: absolute;
+    box-sizing: border-box;
+    margin: 5em 50%;
     width: 20em;
     height: 10em;
-    border: 1px solid black;
+    border: 1px solid #888;
+    background-color: #5b58bb;
+    padding: 1em;
     border-radius: 1em;
     display: none;
+    text-align: center;
+}
+
+#modalContent > *{
+    display: block;
+    margin: 0.5em auto;
+}
+
+.projectNameTimerBackground{
+    font-size: 101px;
+    color: rgba(213,223,188, 0.3);
+    z-index: -10;
+    margin: -3% 30%;
+    position: absolute;
 }
 

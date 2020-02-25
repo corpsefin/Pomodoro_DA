@@ -3,7 +3,6 @@ TODO:
 
     + Adding a new timer
         + Modal styling
-        + Adding timer to the page after pressing add button in the modal
 
     + Adding a new project
         + Add a new project
@@ -34,3 +33,6 @@ DONE:
     19.02.2020:
     + General timer functioning
         + Sound when timer is over
+
+    24.02.2020:
+            + Adding timer to the page after pressing add button in the modal

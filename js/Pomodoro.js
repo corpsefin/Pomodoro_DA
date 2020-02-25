@@ -1,25 +1,44 @@
 const Pomodoro = (name='',seconds, rounds) => {
-    seconds;
-    rounds;
+    const initialSeconds = seconds;
+    const initialRounds = rounds;
 
     let counterSeconds = seconds%60;
     let minutes = Math.floor((seconds/60));
     let endSound = new Audio('../audio/bell.mp3');
     let isStarted = false;
-    let currentRounds=rounds;
+    let timerText = document.createElement('h1');
+    let roundsText = document.createElement('h3');
+    let initialResult = `${addLeadingZeros(minutes)}:${addLeadingZeros(counterSeconds)}`;
+    setValue(initialResult, rounds);
 
+    function breakTimer(breakTime){
+        setInterval(()=>{
 
-    const countdown = setInterval(() => {
+        })
+    }
+
+    setInterval(() => {
+        /*if(breakTime){
+            m
+        }*/
         minutes = Math.floor((seconds/60));
         counterSeconds = seconds%60;
-        if (isStarted) {
-            let result = '';
+        let result = '';
+        if (isStarted) { 
             seconds--;
-            addLeadingZeros()
-
             result += `${addLeadingZeros(minutes)}:${addLeadingZeros(counterSeconds)}`;
-            console.log(result)
         }
+        if(seconds <= 0 && minutes <= 0){
+            rounds--;
+            console.log(rounds)
+            endSound.play();
+            //breakTimer();
+            reset();
+        }
+        if(rounds === 0){
+            stop();
+        }
+        setValue(result, rounds)
     }, 1000);
 
     function addLeadingZeros(time){
@@ -32,7 +51,6 @@ const Pomodoro = (name='',seconds, rounds) => {
 
     function pause() {
         isStarted = false;
-        //renderTimerValue()
     }
 
     function stop(){
@@ -41,8 +59,29 @@ const Pomodoro = (name='',seconds, rounds) => {
     }
 
     function reset(){
-        seconds = seconds;
+        let result = '';
+        seconds = initialSeconds;
+        counterSeconds = seconds%60;
         minutes = Math.floor((seconds/60));
+        result += `${addLeadingZeros(minutes)}:${addLeadingZeros(counterSeconds)}`;
+        setValue(`${result}`)
+    }
+
+    function setValue(timerValue, roundsValue){
+        timerText.textContent = timerValue;
+        roundsText.textContent = roundsValue
+    }
+
+    function getValue(string){
+        if(string === 'timer'){
+            return timerText;
+        }
+        else if(string==='rounds'){
+            return roundsText;
+        }
+        else{
+            alert('error');
+        }
     }
 
     return {
@@ -50,6 +89,7 @@ const Pomodoro = (name='',seconds, rounds) => {
         pause,
         stop,
         reset,
+        getValue
     }
 }
 
