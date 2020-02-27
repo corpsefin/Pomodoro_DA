@@ -31,6 +31,7 @@ ul, li{
     background-color: #bb5b58;
     color: white;
     transition-duration: 1000ms;
+    z-index: 10;
 }
 
 #closeSidebar{
@@ -97,15 +98,14 @@ ul, li{
 }
 
 #modalContent{
-    background: white;
     position: absolute;
     box-sizing: border-box;
-    margin: 5em 50%;
+
     width: 20em;
     height: 10em;
     border: 1px solid #888;
     background-color: #5b58bb;
-    padding: 1em;
+    padding: 0;
     border-radius: 1em;
     display: none;
     text-align: center;
@@ -116,11 +116,64 @@ ul, li{
     margin: 0.5em auto;
 }
 
+#modalContentHeader > 
+
 .projectNameTimerBackground{
     font-size: 101px;
     color: rgba(213,223,188, 0.3);
     z-index: -10;
     margin: -3% 30%;
     position: absolute;
+}
+
+.modalHeaderText{
+    padding: 0;
+    margin: 0;
+}
+
+#projectModalContainer{
+    position: absolute;
+    box-sizing: border-box;
+    width: auto;
+    height: auto;
+    padding: 0;
+    border: 1px solid #888;
+    background-color: #5b58bb;
+    color: white;
+    border-radius: 1em;
+    display: none;
+    text-align: center;
+}
+
+#projectModalContainerHeader, .modalHeader{
+    padding: 0;
+    border-radius: 1em 1em 0 0;
+    margin: 0;
+    position: relative;
+}
+
+#projectModalContainerHeader:hover, .modalHeader:hover{
+    background-color: #5b58cb;
+}
+
+#projectModalContent{
+    display: flex;
+    flex-direction: column;
+    margin: 1em;
+    text-align: start;
+}
+
+#projectModalContent > *{
+    margin: 0.2em 0;
+}
+
+#projectDescription{
+    resize: none;
+}
+
+#projectModalContent > button{
+    margin: 1em 0 0 0;
+    align-self: flex-end;
+    width: 6em
 }
 

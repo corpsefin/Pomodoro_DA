@@ -1,1 +1,16 @@
 <button id="addProjectButton">Add project</button>
+
+<div id="projectModalContainer">
+    <div id="projectModalContainerHeader">
+        <h2 class="modalHeaderText">Project</h2>
+    </div>
+    <form id="projectModalContent">
+        <label for="projectName">Name</label>
+        <input type="text" id="projectName" max="60"/>
+        <label for="pomodoroCount">Pomodoros</label>
+        <input type="number" id="pomodoroCount" max="20"/>
+        <label for="projectDescription">Description</label>
+        <textarea type="text" id="projectDescription" rows="10" cols="40"></textarea>
+        <button type="submit" id="addProject">Add</button>
+    </form>
+</div>

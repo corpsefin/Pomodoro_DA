@@ -8,26 +8,30 @@ import {Project} from './Project.js'
         const sidebar = document.getElementById('sidebar');
         const closeSidebar = document.getElementById('closeSidebar');
         const sidebarItems = document.getElementsByClassName('sidebarItem');
-        const modalAddButton = document.getElementById('modalOk');
-        const addTimerButton = document.getElementById('addTimer');
+        const addNewTimer = document.getElementById('modalOk');
+        const toggleTimerModalButton = document.getElementById('addTimer');
         const saveTimers = document.getElementById('saveTimers');
         const timerValue = document.getElementById('timerValue');
+        let addProjectButton = null;
+        let activePage = '';
 
         let opened=true;
-        let modalOpen = false;
+        let timerModalOpen = false;
+        let projectModalOpen = false;
         let timerArray = [];
+        let projectArray = [];
 
         saveTimers.addEventListener('click', (e)=>{
             e.preventDefault();
         })
 
         closeSidebar.addEventListener('click', toggleSidebar);
-        addTimerButton.addEventListener('click', (e)=>{
+        toggleTimerModalButton.addEventListener('click', (e)=>{
             e.preventDefault();
             toggleTimerModal();
         })
 
-        modalAddButton.addEventListener('click', (e) =>{
+        addNewTimer.addEventListener('click', (e) =>{
             e.preventDefault();
             let timerMinutes = 25;
             let timerSeconds = 0;
@@ -43,6 +47,11 @@ import {Project} from './Project.js'
 
             console.log(timerArray)
         })
+
+        function addNewProject(projectName, pomodoroCount,projectDescription){
+            let newProject = Project(projectName, pomodoroCount, projectDescription);
+            projectArray.push(newProject);
+        }
 
         /*Array.from(JSON.parse(localStorage.getItem('timers'))).forEach(timer=>{
             renderTimer(timer);
@@ -84,19 +93,26 @@ import {Project} from './Project.js'
                 xhr.onreadystatechange = function(){
                     if(xhr.readyState === 4){
                         if(xhr.status === 200){
-                            if(realUrl[1] === 'index'){
+                            if(realUrl[1] === 'index' || realUrl === null){
+                                activePage = realUrl[1];
                                 let content = xhr.responseText.split('<main id="mainWindow">');
                                 let realContent = content[1].split('</main>');
                                 mainWindow.innerHTML = realContent[0];
                                 init();
+                                dragModalElement(document.getElementById('modalContent'));
                             }
                             else{
+                                console.log('projects')
+                                activePage = realUrl[1];
                                 init();
                                 mainWindow.innerHTML = xhr.responseText;
-                                const addProjectButton = document.getElementById('addProjectButton');
+                                addProjectButton = document.getElementById('addProjectButton');
                                 addProjectButton.addEventListener('click', (e)=>{
-                                    console.log(e.target)
+                                    console.log('click')
+                                    e.preventDefault();
+                                    toggleProjectModal();
                                 })
+                                dragModalElement(document.getElementById('projectModalContainer'));
                             }
                         }
                     }
@@ -104,18 +120,43 @@ import {Project} from './Project.js'
                 xhr.send();
             }
         }
+        
+        //READ THROUGH AND TRY TO UNDERSTAND
+        function dragModalElement(element){
+            let pos1=0,
+                pos2=0,
+                pos3=0,
+                pos4=0;
 
-        mainWindow.addEventListener('click', (e)=>{
-            dragElement(e.target)
-        })
+                if(document.getElementById(element.id + 'Header')){
+                    document.getElementById(element.id + 'Header').onmousedown = dragMouseDown;
+                }
 
-        function dragElement(element){
-            let pos1 = 0;
-            let pos2 = 0;
-            let pos3 = 0;
-            let pos4 = 0;
+                function dragMouseDown(e){
+                    e=e || window.event;
+                    e.preventDefault();
+                    pos3=e.clientX;
+                    pos4=e.clientY;
+                    document.onmouseup = closeDragElement;
+                    document.onmousemove = elementDrag;
+                }
 
-            console.log(element.id)
+                function elementDrag(e){
+                    e=e || window.event;
+                    e.preventDefault();
+                    pos1 = pos3 - e.clientX;
+                    pos2 = pos4 - e.clientY;
+                    pos3 = e.clientX;
+                    pos4 = e.clientY;
+
+                    element.style.top = (element.offsetTop - pos2)+'px';
+                    element.style.left = (element.offsetLeft - pos1)+'px';
+                }
+
+                function closeDragElement(){
+                    document.onmouseup = null;
+                    document.onmousemove = null;
+                }
         }
 
         function toggleSidebar(){
@@ -137,16 +178,29 @@ import {Project} from './Project.js'
 
         function toggleTimerModal(){
             const modalContent = document.getElementById('modalContent');
-            const timerText = document.getElementById('modalTimer');
             modalContent.setAttribute('id', 'modalContent');
 
-            if(!modalOpen){
+            if(!timerModalOpen){
                 modalContent.style.display = 'block';
-                modalOpen = true;
+                timerModalOpen = true;
             }
             else{
                 modalContent.style.display = 'none';
-                modalOpen = false;
+                timerModalOpen = false;
+            }
+        }
+
+        function toggleProjectModal(){
+            const modalContent = document.getElementById('projectModalContainer');
+            modalContent.setAttribute('id', 'projectModalContainer');
+
+            if(!projectModalOpen){
+                modalContent.style.display = 'block';
+                projectModalOpen = true;
+            }
+            else{
+                modalContent.style.display = 'none';
+                timerModalOpen = false;
             }
         }
 
@@ -194,6 +248,8 @@ import {Project} from './Project.js'
             timerContent.append(projectName,timer.getValue('timer'),timer.getValue('rounds'),timerStartButton, timerPauseButton, timerStopButton, timerResetButton);
             timerList.appendChild(timerContent);
         }
+
+        
     };
 
 init();
