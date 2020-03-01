@@ -45,7 +45,7 @@ const Pomodoro = (name='',seconds, rounds, breakSeconds) => {
             endSound.play();
             reset();
         }
-        if(rounds === 0){
+        if(rounds <= 0){
             stop();
         }
         setValue(result, rounds)
@@ -81,7 +81,7 @@ const Pomodoro = (name='',seconds, rounds, breakSeconds) => {
 
     function setValue(timerValue, roundsValue){
         timerText.textContent = timerValue;
-        roundsText.textContent = roundsValue
+        roundsText.textContent = roundsValue;
     }
 
     function getValue(string){

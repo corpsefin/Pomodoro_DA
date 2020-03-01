@@ -109,7 +109,7 @@ ul, li, #sidebarList{
     margin: 0.2em 0;
 }
 
-.timeContainer > label{
+.timeContainer > label, #roundsContainer > label{
     display:block;
     margin: 0.2em 0;
 }

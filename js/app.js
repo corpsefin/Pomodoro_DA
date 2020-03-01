@@ -81,7 +81,7 @@ import {Project} from './Project.js'
                 breakTimeMinutes = parseInt(breakTimeInput.value.substr(0,2));
                 breakTimeSeconds = parseInt(breakTimeInput.value.substr(3,4));
             }
-            let newTimer = Pomodoro(nameInput,((timerMinutes*60)+timerSeconds), roundsInput,(breakTimeMinutes*60)+breakTimeSeconds);
+            let newTimer = Pomodoro(nameInput,((timerMinutes*60)+timerSeconds), roundsInput.value,(breakTimeMinutes*60)+breakTimeSeconds);
             timerArray.push(newTimer);
 
             return newTimer;
