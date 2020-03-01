@@ -6,6 +6,11 @@ html, body{
     font-family: 'Roboto';
 }
 
+body{
+    display: flex;
+    flex-direction: row;
+}
+
 a{
     text-decoration: none;
 }
@@ -14,13 +19,7 @@ a:visited{
     color: white;
 }
 
-
-body{
-    display: flex;
-    flex-direction: row;
-}
-
-ul, li{
+ul, li, #sidebarList{
     padding:0;
     margin: 0;
 }
@@ -42,11 +41,6 @@ ul, li{
     text-align: center;
     cursor: pointer;
     list-style-type: none;
-}
-
-#sidebarList{
-    margin: 0;
-    padding: 0;
 }
 
 .sidebarItem, .active{
@@ -97,12 +91,12 @@ ul, li{
     cursor: pointer;
 }
 
-#modalContent{
+#timerModalContainer{
     position: absolute;
     box-sizing: border-box;
-
-    width: 20em;
-    height: 10em;
+    min-width: 15em;
+    width: auto;
+    height: auto;
     border: 1px solid #888;
     background-color: #5b58bb;
     padding: 0;
@@ -111,12 +105,19 @@ ul, li{
     text-align: center;
 }
 
-#modalContent > *{
-    display: block;
-    margin: 0.5em auto;
+#timerModalContent > *, #projectModalContent > *{
+    margin: 0.2em 0;
 }
 
-#modalContentHeader > 
+.timeContainer > label{
+    display:block;
+    margin: 0.2em 0;
+}
+
+#timerValue, #projectTimerValue, #breakValue, #longBreakValue{
+    width: 5em;
+    text-align: center;
+}
 
 .projectNameTimerBackground{
     font-size: 101px;
@@ -124,11 +125,6 @@ ul, li{
     z-index: -10;
     margin: -3% 30%;
     position: absolute;
-}
-
-.modalHeaderText{
-    padding: 0;
-    margin: 0;
 }
 
 #projectModalContainer{
@@ -145,33 +141,40 @@ ul, li{
     text-align: center;
 }
 
-#projectModalContainerHeader, .modalHeader{
+.modalHeader{
     padding: 0;
     border-radius: 1em 1em 0 0;
     margin: 0;
     position: relative;
+    color: white;
+    user-select: none;
 }
 
-#projectModalContainerHeader:hover, .modalHeader:hover{
+.modalHeaderText{
+    padding: 0;
+    margin: 0;
+}
+
+.modalHeader:hover{
     background-color: #5b58cb;
+    color: rgba(253,253,253,0.8);
+    cursor: pointer;
 }
 
-#projectModalContent{
+#projectModalContent, #timerModalContent{
     display: flex;
     flex-direction: column;
     margin: 1em;
     text-align: start;
 }
 
-#projectModalContent > *{
-    margin: 0.2em 0;
-}
-
 #projectDescription{
     resize: none;
+    border-radius: 1em;
+    padding: 0.5em;
 }
 
-#projectModalContent > button{
+#projectModalContent > button, #timerModalContent > button{
     margin: 1em 0 0 0;
     align-self: flex-end;
     width: 6em

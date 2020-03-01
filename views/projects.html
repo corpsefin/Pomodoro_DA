@@ -1,7 +1,7 @@
 <button id="addProjectButton">Add project</button>
 
 <div id="projectModalContainer">
-    <div id="projectModalContainerHeader">
+    <div id="projectModalContainerHeader" class="modalHeader">
         <h2 class="modalHeaderText">Project</h2>
     </div>
     <form id="projectModalContent">
@@ -9,6 +9,8 @@
         <input type="text" id="projectName" max="60"/>
         <label for="pomodoroCount">Pomodoros</label>
         <input type="number" id="pomodoroCount" max="20"/>
+        <label for="projectTimerValue">Pomodoro Length</label>
+        <input type="time" id="projectTimerValue" max="60">
         <label for="projectDescription">Description</label>
         <textarea type="text" id="projectDescription" rows="10" cols="40"></textarea>
         <button type="submit" id="addProject">Add</button>

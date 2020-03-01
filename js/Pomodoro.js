@@ -1,9 +1,13 @@
-const Pomodoro = (name='',seconds, rounds) => {
+const Pomodoro = (name='',seconds, rounds, breakSeconds) => {
+
+    name;
+
     const initialSeconds = seconds;
     const initialRounds = rounds;
 
     let counterSeconds = seconds%60;
     let minutes = Math.floor((seconds/60));
+    let breakMinutes = Math.floor((breakSeconds/60));
     let endSound = new Audio('../audio/bell.mp3');
     let isStarted = false;
     let timerText = document.createElement('h1');
@@ -11,18 +15,9 @@ const Pomodoro = (name='',seconds, rounds) => {
     let initialResult = `${addLeadingZeros(minutes)}:${addLeadingZeros(counterSeconds)}`;
     setValue(initialResult, rounds);
 
-    function breakTimer(breakTime){
-        setInterval(()=>{
-
-        })
-    }
-
     setInterval(() => {
-        /*if(breakTime){
-            m
-        }*/
         minutes = Math.floor((seconds/60));
-        counterSeconds = seconds%60;
+        counterSeconds = Math.floor(seconds%60);
         let result = '';
         if (isStarted) { 
             seconds--;
@@ -32,17 +27,33 @@ const Pomodoro = (name='',seconds, rounds) => {
             rounds--;
             console.log(rounds)
             endSound.play();
-            //breakTimer();
+            breakTimer();
             reset();
         }
         if(rounds === 0){
             stop();
         }
         setValue(result, rounds)
-    }, 1000);
+    }, Math.floor(1000));
 
     function addLeadingZeros(time){
         return time < 10 ? `0${time}` : time;
+    }
+
+    function breakTimer(){
+        breakMinutes = Math.floor((breakSeconds/60));
+        counterSeconds = Math.floor((breakSeconds%60));
+        setInterval(()=>{
+            breakMinutes = Math.floor((breakSeconds/60));
+            counterSeconds = Math.floor((breakSeconds%60));
+            let result = '';
+            if(isStarted){
+                breakSeconds--;
+                result += `${addLeadingZeros(breakMinutes)}:${addLeadingZeros(counterSeconds)}`;
+            }
+
+            setValue(result, rounds)
+        },Math.floor(1000))
     }
 
     function start() {
@@ -84,12 +95,17 @@ const Pomodoro = (name='',seconds, rounds) => {
         }
     }
 
+    function getName(){
+        return name;
+    }
+
     return {
         start,
         pause,
         stop,
         reset,
-        getValue
+        getValue,
+        getName
     }
 }
 

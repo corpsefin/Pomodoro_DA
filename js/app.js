@@ -8,13 +8,13 @@ import {Project} from './Project.js'
         const sidebar = document.getElementById('sidebar');
         const closeSidebar = document.getElementById('closeSidebar');
         const sidebarItems = document.getElementsByClassName('sidebarItem');
-        const addNewTimer = document.getElementById('modalOk');
+        const addTimer = document.getElementById('modalOk');
         const toggleTimerModalButton = document.getElementById('addTimer');
         const saveTimers = document.getElementById('saveTimers');
-        const timerValue = document.getElementById('timerValue');
+        const timeContainer = document.getElementsByClassName('timeContainer');
+
         let addProjectButton = null;
         let activePage = '';
-
         let opened=true;
         let timerModalOpen = false;
         let projectModalOpen = false;
@@ -31,25 +31,58 @@ import {Project} from './Project.js'
             toggleTimerModal();
         })
 
-        addNewTimer.addEventListener('click', (e) =>{
+        addTimer.addEventListener('click', (e) =>{
             e.preventDefault();
-            let timerMinutes = 25;
-            let timerSeconds = 0;
-            if(timerValue.value != ''){
-                timerMinutes = parseInt(timerValue.value.substr(0,2));
-                timerSeconds = parseInt(timerValue.value.substr(3,4));
-            }
-            let newTimer = Pomodoro('',((timerMinutes*60)+timerSeconds), 5);
-            timerArray.push(newTimer);
-            if(localStorage.getItem('timers') === null)
-                localStorage.setItem('timers', JSON.stringify(newTimer));
+            const timerValue = document.getElementById('timerValue');
+            const timerName = document.getElementById('timerName');
+            let newTimer = addNewTimer(timerName.textContent, timerValue);
             renderTimer(newTimer);
-
-            console.log(timerArray)
         })
 
+        Array.from(timeContainer).forEach(container =>{
+            let minutes=0;
+            let targetTimerArr = [];
+            let targetTimer;
+            container.addEventListener('click', (e)=>{
+                if(e.target.matches('button')){
+                    if(e.target.id.includes('Increment')){
+                        targetTimerArr = e.target.id.split('Increment');
+                        targetTimer= document.getElementById(`${targetTimerArr[0]}Value`);
+                        minutes++;
+                        minutes < 10 ? minutes = `0${minutes}` : minutes = minutes;  
+                        targetTimer.value = `${minutes}:00`
+                    }
+                    else if(e.target.id.includes('Decrement')){
+                        targetTimerArr = e.target.id.split('Decrement');
+                        targetTimer= document.getElementById(`${targetTimerArr[0]}Value`);
+                        minutes--;
+                        if(minutes < 0){
+                            minutes = 0;
+                        }
+                        minutes < 10 ? minutes = `0${minutes}` : minutes = minutes;
+                        targetTimer.value = `${minutes}:00`
+                    }                                     
+                }
+            })
+        })
+
+        function addNewTimer(nameInput, timeInput){
+            let timerMinutes = 25;
+            let timerSeconds = 0;
+            if(timeInput.value != ''){
+                timerMinutes = parseInt(timeInput.value.substr(0,2));
+                timerSeconds = parseInt(timeInput.value.substr(3,4));
+            }
+            let newTimer = Pomodoro(nameInput,((timerMinutes*60)+timerSeconds), 5,140);
+            timerArray.push(newTimer);
+
+            return newTimer;
+        }
+
         function addNewProject(projectName, pomodoroCount,projectDescription){
+            const projectTimerValue = document.getElementById('projectTimerValue');
             let newProject = Project(projectName, pomodoroCount, projectDescription);
+            addNewTimer(projectName + 'Timer', projectTimerValue);
             projectArray.push(newProject);
         }
 
@@ -99,7 +132,7 @@ import {Project} from './Project.js'
                                 let realContent = content[1].split('</main>');
                                 mainWindow.innerHTML = realContent[0];
                                 init();
-                                dragModalElement(document.getElementById('modalContent'));
+                                dragModalElement(document.getElementById('timerModalContainer'));
                             }
                             else{
                                 console.log('projects')
@@ -177,31 +210,35 @@ import {Project} from './Project.js'
         }
 
         function toggleTimerModal(){
-            const modalContent = document.getElementById('modalContent');
-            modalContent.setAttribute('id', 'modalContent');
+            const timerModalContainer = document.getElementById('timerModalContainer');
+            timerModalContainer.setAttribute('id', 'timerModalContainer');
 
             if(!timerModalOpen){
-                modalContent.style.display = 'block';
+                timerModalContainer.style.display = 'block';
                 timerModalOpen = true;
             }
             else{
-                modalContent.style.display = 'none';
+                timerModalContainer.style.display = 'none';
                 timerModalOpen = false;
             }
         }
 
         function toggleProjectModal(){
-            const modalContent = document.getElementById('projectModalContainer');
-            modalContent.setAttribute('id', 'projectModalContainer');
+            const timerModalContainer = document.getElementById('projectModalContainer');
+            timerModalContainer.setAttribute('id', 'projectModalContainer');
 
             if(!projectModalOpen){
-                modalContent.style.display = 'block';
+                timerModalContainer.style.display = 'block';
                 projectModalOpen = true;
             }
             else{
-                modalContent.style.display = 'none';
+                timerModalContainer.style.display = 'none';
                 timerModalOpen = false;
             }
+        }
+
+        function addTime(){
+
         }
 
         function renderTimer(timer){
@@ -236,7 +273,7 @@ import {Project} from './Project.js'
             timerPauseButton.innerHTML = `<p>Pause</p>`;
             timerStopButton.innerHTML = `<p>Stop</p>`;
             timerResetButton.innerHTML = `<p>Reset</p>`;
-            projectName.innerHTML = 'PREJCT';
+            projectName.innerHTML = timer.getName();
 
             timerContent.setAttribute('class', 'timerContent');
             timerStartButton.setAttribute('id', 'startTimer');

@@ -19,12 +19,33 @@
         </ul>
     </div>
     <main id="mainWindow">
-        <div id="modalContent">
-            <div id="modalContentHeader" class=".modalHeader">
+        <div id="timerModalContainer">
+            <div id="timerModalContainerHeader" class="modalHeader">
                 <h2 class="modalHeaderText">Time</h2>
             </div>
-            <input type="time" id="timerValue" max="60">
-            <button id="modalOk">Add</button>
+            <form id="timerModalContent">
+                <label for="timerName">Name</label>
+                <input type="text" id="timerName"/>
+                <div class="timeContainer">
+                    <label for="timerValue">Time</label>
+                    <input type="time" id="timerValue" max="60"/>
+                    <button type="button" id="timerDecrement">-</button>
+                    <button type="button" id="timerIncrement">+</button>
+                </div>
+                <div class="timeContainer">
+                    <label for="breakValue">Break Length</label>
+                    <input type="time" id="breakValue" max="60"/>
+                    <button type="button" id="breakDecrement">-</button>
+                    <button type="button" id="breakIncrement">+</button>
+                </div>
+                <div class="timeContainer">
+                    <label for="longBreakValue">Long Break Length</label>
+                    <input type="time" id="longBreakValue" max="60"/>
+                    <button type="button" id="longBreakDecrement">-</button>
+                    <button type="button" id="longBreakIncrement">+</button>
+                </div>
+                <button type="submit" id="modalOk">Add</button>
+            </form>
         </div>
         <button id="addTimer">Add</button>
         <button id="saveTimers">Save timers</button>
