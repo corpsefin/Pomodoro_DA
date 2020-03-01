@@ -35,7 +35,9 @@ import {Project} from './Project.js'
             e.preventDefault();
             const timerValue = document.getElementById('timerValue');
             const timerName = document.getElementById('timerName');
-            let newTimer = addNewTimer(timerName.textContent, timerValue);
+            const roundsValue = document.getElementById('roundsValue');
+            const breakTimeValue = document.getElementById('breakValue');
+            let newTimer = addNewTimer(timerName.textContent, timerValue, roundsValue, breakTimeValue);
             renderTimer(newTimer);
         })
 
@@ -66,14 +68,20 @@ import {Project} from './Project.js'
             })
         })
 
-        function addNewTimer(nameInput, timeInput){
+        function addNewTimer(nameInput, timeInput, roundsInput, breakTimeInput){
             let timerMinutes = 25;
             let timerSeconds = 0;
+            let breakTimeMinutes = 5;
+            let breakTimeSeconds = 0;
             if(timeInput.value != ''){
                 timerMinutes = parseInt(timeInput.value.substr(0,2));
                 timerSeconds = parseInt(timeInput.value.substr(3,4));
             }
-            let newTimer = Pomodoro(nameInput,((timerMinutes*60)+timerSeconds), 5,140);
+            if(breakTimeInput.value != ''){
+                breakTimeMinutes = parseInt(breakTimeInput.value.substr(0,2));
+                breakTimeSeconds = parseInt(breakTimeInput.value.substr(3,4));
+            }
+            let newTimer = Pomodoro(nameInput,((timerMinutes*60)+timerSeconds), roundsInput,(breakTimeMinutes*60)+breakTimeSeconds);
             timerArray.push(newTimer);
 
             return newTimer;
