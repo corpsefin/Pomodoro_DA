@@ -13,6 +13,7 @@ import {Project} from './Project.js'
         const saveTimers = document.getElementById('saveTimers');
         const timeContainer = document.getElementsByClassName('timeContainer');
 
+
         let addProjectButton = null;
         let activePage = '';
         let opened=true;
@@ -37,7 +38,10 @@ import {Project} from './Project.js'
             const timerName = document.getElementById('timerName');
             const roundsValue = document.getElementById('roundsValue');
             const breakTimeValue = document.getElementById('breakValue');
-            let newTimer = addNewTimer(timerName.textContent, timerValue, roundsValue, breakTimeValue);
+            const longBreakValue = document.getElementById('longBreakValue');
+            const longBreakGap = document.getElementById('longBreakGapValue');
+            let newTimer = addNewTimer(timerName.textContent, timerValue, roundsValue, breakTimeValue,longBreakValue, longBreakGap);
+            console.log(breakTimeValue)
             renderTimer(newTimer);
         })
 
@@ -68,11 +72,14 @@ import {Project} from './Project.js'
             })
         })
 
-        function addNewTimer(nameInput, timeInput, roundsInput, breakTimeInput){
+        function addNewTimer(nameInput, timeInput, roundsInput, breakTimeInput, longBreakInput, longBreakGapInput){
             let timerMinutes = 25;
             let timerSeconds = 0;
             let breakTimeMinutes = 5;
             let breakTimeSeconds = 0;
+            let longBreakMinutes = 10;
+            let longBreakSeconds = 0;
+            let longBreakGap = 4;
             if(timeInput.value != ''){
                 timerMinutes = parseInt(timeInput.value.substr(0,2));
                 timerSeconds = parseInt(timeInput.value.substr(3,4));
@@ -81,7 +88,14 @@ import {Project} from './Project.js'
                 breakTimeMinutes = parseInt(breakTimeInput.value.substr(0,2));
                 breakTimeSeconds = parseInt(breakTimeInput.value.substr(3,4));
             }
-            let newTimer = Pomodoro(nameInput,((timerMinutes*60)+timerSeconds), roundsInput.value,(breakTimeMinutes*60)+breakTimeSeconds);
+            if(longBreakInput.value != ''){
+                longBreakMinutes = parseInt(longBreakInput.value.substr(0,2));
+                longBreakSeconds = parseInt(longBreakInput.value.substr(3,4));
+            }
+            if(longBreakGapInput.value != ''){
+                longBreakGap = longBreakGapInput.value;
+            }
+            let newTimer = Pomodoro(nameInput,((timerMinutes*60)+timerSeconds), roundsInput.value,(breakTimeMinutes*60)+breakTimeSeconds, (longBreakMinutes*60)+longBreakSeconds, longBreakGap);
             timerArray.push(newTimer);
 
             return newTimer;

@@ -1,17 +1,25 @@
-const Pomodoro = (name='',seconds, rounds, breakSeconds) => {
+const Pomodoro = (name='',seconds, rounds, breakSeconds,longBreakSeconds, longBreakGap=4) => {
 
     name;
+    longBreakGap;
+
+    console.log(name)
+    console.log(longBreakGap)
 
     const initialSeconds = seconds;
-    const intialBreakSeconds = breakSeconds;
+    const initialBreakSeconds = breakSeconds;
+    const initialLongBreakSeconds = longBreakSeconds;
     const initialRounds = rounds;
-
+    
     let counterSeconds = seconds%60;
     let minutes = Math.floor((seconds/60));
     let breakMinutes = Math.floor((breakSeconds/60));
+    let longBreakMinutes = Math.floor(longBreakSeconds/60);
     let endSound = new Audio('../audio/bell.mp3');
     let isStarted = false;
     let breakTimer = false;
+    let longBreak = false;
+    let longBreakCounter = 1;
     let timerText = document.createElement('h1');
     let roundsText = document.createElement('h3');
     let initialResult = `${addLeadingZeros(minutes)}:${addLeadingZeros(counterSeconds)}`;
@@ -21,6 +29,7 @@ const Pomodoro = (name='',seconds, rounds, breakSeconds) => {
         minutes = Math.floor((seconds/60));
         counterSeconds = Math.floor(seconds%60);
         breakMinutes = Math.floor((breakSeconds/60));
+        longBreakMinutes = Math.floor(longBreakSeconds/60);
         let result = '';
         if (isStarted) {
             if(!breakTimer){
@@ -28,26 +37,50 @@ const Pomodoro = (name='',seconds, rounds, breakSeconds) => {
                 result += `${addLeadingZeros(minutes)}:${addLeadingZeros(counterSeconds)}`;
             }
             else{
-                breakSeconds--;
-                counterSeconds = Math.floor((breakSeconds%60));
-                result += `${addLeadingZeros(breakMinutes)}:${addLeadingZeros(counterSeconds)}`;
+                if(!longBreak){
+                    breakSeconds--;
+                    counterSeconds = Math.floor((breakSeconds%60));
+                    result += `${addLeadingZeros(breakMinutes)}:${addLeadingZeros(counterSeconds)}`;
+                }
+                else{
+                    longBreakSeconds--;
+                    counterSeconds = Math.floor((longBreakSeconds%60));
+                    result += `${addLeadingZeros(longBreakMinutes)}:${addLeadingZeros(counterSeconds)}`;
+                }
             }
         }
-        if(seconds < 0 && minutes < 0){
+        if(seconds <= 0 && minutes <= 0){
             rounds--;
+            longBreakCounter++;
             console.log(rounds)
             endSound.play();
             reset();
             breakTimer = true;
+
+            console.log(longBreakCounter + '/' + longBreakGap)
         }
         else if(breakSeconds <= 0 && breakMinutes <= 0){
             breakTimer = false;
             endSound.play();
             reset();
         }
+        else if(longBreakSeconds <= 0 && longBreakMinutes <= 0){
+            longBreak = false;
+            endSound.play();
+            reset();
+        }
         if(rounds <= 0){
             stop();
         }
+        if(longBreakGap%longBreakCounter!=0){
+            longBreak=false;
+        }
+        else{
+            console.log('PITKÄ')
+            longBreak = true;
+            
+        }
+        console.log('long ' + longBreakCounter%longBreakGap)
         setValue(result, rounds)
     }, Math.floor(1000));
 
@@ -71,10 +104,10 @@ const Pomodoro = (name='',seconds, rounds, breakSeconds) => {
     function reset(){
         let result = '';
         seconds = initialSeconds;
-        breakSeconds = intialBreakSeconds;
+        breakSeconds = initialBreakSeconds;
+        longBreakSeconds = initialLongBreakSeconds;
         counterSeconds = seconds%60;
-        minutes = Math.floor((seconds/60));
-        breakMinutes = Math.floor(breakSeconds/60);
+
         result += `${addLeadingZeros(minutes)}:${addLeadingZeros(counterSeconds)}`;
         setValue(`${result}`)
     }
