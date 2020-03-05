@@ -13,7 +13,6 @@ import {Project} from './Project.js'
         const saveTimers = document.getElementById('saveTimers');
         const timeContainer = document.getElementsByClassName('timeContainer');
 
-
         let addProjectButton = null;
         let activePage = '';
         let opened=true;
@@ -40,9 +39,7 @@ import {Project} from './Project.js'
             const breakTimeValue = document.getElementById('breakValue');
             const longBreakValue = document.getElementById('longBreakValue');
             const longBreakGap = document.getElementById('longBreakGapValue');
-            let newTimer = addNewTimer(timerName.textContent, timerValue, roundsValue, breakTimeValue,longBreakValue, longBreakGap);
-            console.log(breakTimeValue)
-            renderTimer(newTimer);
+            addNewTimer(timerName.textContent, timerValue, roundsValue, breakTimeValue,longBreakValue, longBreakGap);
         })
 
         Array.from(timeContainer).forEach(container =>{
@@ -98,7 +95,7 @@ import {Project} from './Project.js'
             let newTimer = Pomodoro(nameInput,((timerMinutes*60)+timerSeconds), roundsInput.value,(breakTimeMinutes*60)+breakTimeSeconds, (longBreakMinutes*60)+longBreakSeconds, longBreakGap);
             timerArray.push(newTimer);
 
-            return newTimer;
+            renderTimer(newTimer)
         }
 
         function addNewProject(projectName, pomodoroCount,projectDescription){
@@ -107,14 +104,6 @@ import {Project} from './Project.js'
             addNewTimer(projectName + 'Timer', projectTimerValue);
             projectArray.push(newProject);
         }
-
-        /*Array.from(JSON.parse(localStorage.getItem('timers'))).forEach(timer=>{
-            renderTimer(timer);
-        })*/
-
-       /* Array.from(ls).forEach(timer =>{
-            renderTimer(timer);
-        })*/
 
         sidebar.addEventListener('click', (e)=>{
             Array.from(sidebarItems).forEach(target =>{
@@ -259,8 +248,9 @@ import {Project} from './Project.js'
             }
         }
 
-        function addTime(){
-
+        function removeObject(object){
+            timerList.removeChild()
+            timerArray.pop(object);
         }
 
         function renderTimer(timer){
@@ -269,6 +259,7 @@ import {Project} from './Project.js'
             const timerPauseButton = document.createElement('button');
             const timerStopButton = document.createElement('button');
             const timerResetButton = document.createElement('button');
+            const removeTimerButton = document.createElement('button');
             const projectName = document.createElement('h1');
 
             timerStartButton.addEventListener('click', (e) =>{
@@ -291,25 +282,29 @@ import {Project} from './Project.js'
                 timer.reset();
             })
 
+            removeTimerButton.addEventListener('click', (e)=>{
+                e.preventDefault();
+                removeObject(e.target)
+            })
+
             timerStartButton.innerHTML = `<p>Start</p>`;
             timerPauseButton.innerHTML = `<p>Pause</p>`;
             timerStopButton.innerHTML = `<p>Stop</p>`;
             timerResetButton.innerHTML = `<p>Reset</p>`;
-            projectName.innerHTML = timer.getName();
+            removeTimerButton.innerHTML = `<p>X</p>`
+            projectName.innerHTML = timer.getTimer();
 
             timerContent.setAttribute('class', 'timerContent');
             timerStartButton.setAttribute('id', 'startTimer');
             timerPauseButton.setAttribute('id', 'pauseTimer');
             timerStopButton.setAttribute('id', 'stopTimer');
             timerResetButton.setAttribute('id', 'resetTimer');
+            removeTimerButton.setAttribute('id', 'removeTimerButton');
             projectName.setAttribute('class', 'projectNameTimerBackground');
 
-            timerContent.append(projectName,timer.getValue('timer'),timer.getValue('rounds'),timerStartButton, timerPauseButton, timerStopButton, timerResetButton);
+            timerContent.append(timer.getTimer(),projectName,projectName,timerStartButton, timerPauseButton, timerStopButton, timerResetButton, removeTimerButton);
             timerList.appendChild(timerContent);
         }
-
-        
     };
-
 init();
 }());

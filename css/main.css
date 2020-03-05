@@ -81,6 +81,7 @@ ul, li, #sidebarList{
     border: 1px solid #bb5886;
 }
 
+
 #timerText{
     position:relative;
     margin: 0.2em auto;
@@ -89,6 +90,10 @@ ul, li, #sidebarList{
 #timerText:hover{
     color: #5b58bb;
     cursor: pointer;
+}
+
+#removeTimerButton{
+    align-self: flex-end;
 }
 
 #timerModalContainer{
@@ -123,7 +128,7 @@ ul, li, #sidebarList{
     font-size: 101px;
     color: rgba(213,223,188, 0.3);
     z-index: -10;
-    margin: -3% 30%;
+    margin: -8% 30%;
     position: absolute;
 }
 
