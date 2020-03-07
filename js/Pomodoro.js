@@ -17,8 +17,7 @@ const Pomodoro = (name='',seconds, rounds=1, breakSeconds,longBreakSeconds, long
     let longBreakMinutes = Math.floor(longBreakSeconds/60);
     let endSound = new Audio('../audio/bell.mp3');
     let isStarted = false;
-    let shortBreak = false;
-    let longBreak = false;
+    let isBreak = false;
     let longBreakCounter = 1;
     let timerText = document.createElement('h1');
     let roundsText = document.createElement('h3');
@@ -33,10 +32,24 @@ const Pomodoro = (name='',seconds, rounds=1, breakSeconds,longBreakSeconds, long
 
         if(seconds === 0){
             endSound.play();
-            rounds--;
-            shortBreak = true;
-            if(rounds%longBreakCounter == 0){
-                longBreak = true;
+            if(isBreak){
+                if(longBreakCounter % longBreakGap === 0){
+                    resetVariables(longBreakSeconds);
+                }
+                else{
+                    resetVariables(breakSeconds);
+                }
+                isBreak = false;
+            }
+            else{
+                resetVariables(initialSeconds);
+                longBreakCounter++;
+                rounds--;
+                isBreak = true;
+            }
+
+            if(rounds === 0){
+                stop();
             }
         }
         result = `${addLeadingZeros(minutes)}:${addLeadingZeros(counterSeconds)}`;
@@ -44,20 +57,12 @@ const Pomodoro = (name='',seconds, rounds=1, breakSeconds,longBreakSeconds, long
         setTimer(result);
     }
 
-    function checkTimer(){
-        if(!shortBreak)
-            seconds = initialSeconds;
-        else if(shortBreak){
-            seconds = breakSeconds;
-            
-        }
-        else if(longBreak){
-            seconds = longBreakSeconds;
-        }
-    }
-
     function addLeadingZeros(time){
         return time < 10 ? `0${time}` : time;
+    }
+
+    function resetVariables(time){
+        seconds = time;
     }
 
     function start() {
